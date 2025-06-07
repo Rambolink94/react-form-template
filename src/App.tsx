@@ -1,33 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Form from './components/Form'
+import type { FieldConfig } from './types/FormTypes';
+
+// Test data.
+const fetchCodesByYear = async (year: string) => year === "2020" ? ["A1", "B1"] : ["C1", "B1"];
+const fetchLocationsByCode = async (code: string) => code === "A1" ? ["Chicago", "Boston"] : ["Houston"];
+
+const fieldConfigs: FieldConfig[] = [
+  {
+    name: "year",
+    label: "Year",
+    type: "select",
+    options: ["2020", "2021"],
+  },
+  {
+    name: "code",
+    label: "Code",
+    type: "select",
+    dependencies: [
+      {
+        field: "year",
+        fetchOptions: async ({ year }) =>  await fetchCodesByYear(year),
+      }
+    ],
+  },
+  {
+    name: "location",
+    label: "Location",
+    type: "select",
+    dependencies: [
+      {
+        field: "code",
+        fetchOptions: async ({ code }) => await fetchLocationsByCode(code),
+      },
+    ]
+  }
+];
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Form fieldData={fieldConfigs} />
     </>
   )
 }
