@@ -4,10 +4,10 @@ import { FormField } from './FormField';
 import type { FieldConfig } from '@/types/FormTypes';
 
 type Props = {
-  fieldData: FieldConfig[];
+  fields: FieldConfig[];
 }
 
-export default function Form({ fieldData }: Props) {
+export default function Form({ fields }: Props) {
   const { register, control, setValue, handleSubmit, getValues } = useForm();
   const formValues = useWatch({ control });
   const [optionsMap, setOptionsMap] = useState<Record<string, string[]>>({});
@@ -16,7 +16,7 @@ export default function Form({ fieldData }: Props) {
   const computeRequiredMap = useMemo(() => {
     const map: Record<string, boolean> = {};
     const markRequired = (fieldName: string) => {
-      const field = fieldData.find(f => f.name === fieldName);
+      const field = fields.find(f => f.name === fieldName);
 
       if (!field || map[fieldName]) return;
 
@@ -24,17 +24,17 @@ export default function Form({ fieldData }: Props) {
       field.dependencies?.forEach(d => markRequired(d.field));
     };
 
-    fieldData.forEach(f => {
+    fields.forEach(f => {
       if (f.required) markRequired(f.name);
     });
 
     return map;
-  }, [fieldData])
+  }, [fields])
 
   useEffect(() => setRequiedMap(computeRequiredMap), [computeRequiredMap]);
 
   useEffect(() => {
-    fieldData.forEach(field => {
+    fields.forEach(field => {
       const dependencies = field.dependencies ?? [];
 
       dependencies.forEach(dep => {
@@ -66,9 +66,9 @@ export default function Form({ fieldData }: Props) {
         }
       });
     });
-  }, [formValues, fieldData, getValues, setValue]);
+  }, [formValues, fields, getValues, setValue]);
 
-  const isSubmitEnabled = fieldData.every((f) => {
+  const isSubmitEnabled = fields.every((f) => {
     return !requiredMap[f.name] || !!formValues[f.name];
   });
 
@@ -78,8 +78,8 @@ export default function Form({ fieldData }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center m-20">
-      {fieldData.map((field) => (
-        <div key={field.name}>
+      {fields.map((field) => (
+        <div key={field.name} data-testid={`field-${field.name}`}>
           <FormField
             field={field}
             control={control}

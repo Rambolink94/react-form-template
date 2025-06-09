@@ -32,7 +32,7 @@ export const FormField = ({ field, control, register, error, options, disabled }
                 disabled={disabled}
                 >
                 <SelectTrigger>
-                  <SelectValue placeholder={field.label} />
+                  <SelectValue placeholder={`Select ${field.label}...`} />
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((opt) => (

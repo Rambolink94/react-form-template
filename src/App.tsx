@@ -40,7 +40,7 @@ const fieldConfigs: FieldConfig[] = [
 function App() {
   return (
     <>
-      <Form fieldData={fieldConfigs} />
+      <Form fields={fieldConfigs} />
     </>
   )
 }
