@@ -1,15 +1,8 @@
 import { expect, test } from 'vitest';
 import Form from "./Form";
 import { render } from '@testing-library/react'
-import { userEvent, type UserEvent } from '@testing-library/user-event';
 import type { FieldConfig } from "@/types/FormTypes";
 import '@testing-library/jest-dom';
-
-let user: UserEvent;
-
-beforeEach(() => {
-  user = userEvent.setup();
-});
 
 test('field options empty when dependent empty', async () => {
   const fetchCodesByYear = async (year: string) => year === "2020" ? ["A1", "B1"] : ["C1", "B1"];
