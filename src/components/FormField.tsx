@@ -20,7 +20,7 @@ export const FormField = ({ field, control, register, error, options, disabled }
   switch (field.type) {
     case "select":
       return (
-        <div className="p-2 flex flex-row space-x-4 justify-center">
+        <div className="p-2 flex flex-row gap-6 justify-center">
           <label>{field.label}</label>
           <Controller
             name={field.name}
