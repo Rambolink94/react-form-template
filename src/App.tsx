@@ -1,68 +1,9 @@
 import './App.css'
 import Form from './components/Form'
 import { FaGithub } from "react-icons/fa";
-import type { FieldConfig } from './types/FormTypes';
 import { generateFieldConfig } from './data/fake-data-generator';
 import { RiRefreshLine } from "react-icons/ri";
 import { useState } from 'react';
-
-// Test data.
-const fetchCodesByYear = async (year: string) => year === "2020" ? ["A1", "B1"] : ["C1", "B1"];
-const fetchLocationsByCode = async (code: string) => code === "A1" ? ["Chicago", "Boston"] : ["Houston"];
-
-const baseFieldConfig: FieldConfig[] = [
-  {
-    name: "year",
-    label: "Year",
-    type: "select",
-    options: ["2020", "2021"],
-  },
-  {
-    name: "code",
-    label: "Code",
-    type: "select",
-    dependencies: [
-      {
-        field: "year",
-        fetchOptions: async ({ year }) =>  await fetchCodesByYear(year),
-      }
-    ],
-  },
-  {
-    name: "location",
-    label: "Location",
-    type: "select",
-    dependencies: [
-      {
-        field: "code",
-        fetchOptions: async ({ code }) => await fetchLocationsByCode(code),
-      },
-    ]
-  },
-  {
-    name: "class",
-    label: "Class",
-    type: "select",
-    options: ['A', 'B', 'C', 'D'],
-  },
-  /*
-  {
-    name: 'has-external-code',
-    label: 'Has External Code?',
-    type: 'toggle',
-  },
-  {
-    name: 'external-code',
-    label: 'External Code',
-    type: 'text',
-    dependencies: [
-      {
-        field: 'has-external-code',
-      }
-    ]
-  }
-  */
-];
 
 function App() {
   const [fieldConfig, setFieldConfig] = useState(generateFieldConfig());
