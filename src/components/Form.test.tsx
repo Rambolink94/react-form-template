@@ -1,46 +1,15 @@
 import { expect, test } from 'vitest';
 import Form from "./Form";
 import { render } from '@testing-library/react'
-import type { FieldConfig } from "@/types/FormTypes";
 import '@testing-library/jest-dom';
+import { generateFieldConfig } from '@/data/fake-data-generator';
 
 test('field options empty when dependent empty', async () => {
-  const fetchCodesByYear = async (year: string) => year === "2020" ? ["A1", "B1"] : ["C1", "B1"];
-  const fetchLocationsByCode = async (code: string) => code === "A1" ? ["Chicago", "Boston"] : ["Houston"];
-  const fieldConfigs: FieldConfig[] = [
-    {
-      name: "year",
-      label: "Year",
-      type: "select",
-      options: ["2020", "2021"],
-    },
-    {
-      name: "code",
-      label: "Code",
-      type: "select",
-      dependencies: [
-        {
-          field: "year",
-          fetchOptions: async ({ year }) =>  await fetchCodesByYear(year),
-        }
-      ],
-    },
-    {
-      name: "location",
-      label: "Location",
-      type: "select",
-      dependencies: [
-        {
-          field: "code",
-          fetchOptions: async ({ code }) => await fetchLocationsByCode(code),
-        },
-      ]
-    }
-  ];
+  const fieldConfig = generateFieldConfig();
 
-  const component = render(<Form fields={fieldConfigs} />);
+  const component = render(<Form fields={fieldConfig} />);
 
-  fieldConfigs.forEach(fieldInfo => {
+  fieldConfig.forEach(fieldInfo => {
     const field = component.getByTestId(`field-${fieldInfo.name}`);
     const select = field.querySelector('select');
     const options = field.querySelectorAll('option');

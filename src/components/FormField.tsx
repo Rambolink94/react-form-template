@@ -21,7 +21,7 @@ export const FormField = ({ field, control, register, error, options, disabled }
     case "select":
       return (
         <div className="p-2 flex flex-row space-x-4 justify-center">
-          <label>{field.name}</label>
+          <label>{field.label}</label>
           <Controller
             name={field.name}
             control={control}
@@ -63,6 +63,7 @@ export const FormField = ({ field, control, register, error, options, disabled }
       return (
         <>
           <label>{field.label}</label>
+          {options.length == 0 && <input type="checkbox"/>}
           {options.map((opt) => (
             <label key={opt}>
               <input
@@ -75,6 +76,20 @@ export const FormField = ({ field, control, register, error, options, disabled }
           ))}
         </>
       );
+    case "toggle":
+      return (
+        <>
+          <label>{field.label}</label>
+          <input className="m-2" type="checkbox" />
+        </>
+      )
+    case "text":
+      return (
+        <>
+          <label>{field.label}</label>
+          <input className="m-2 p-2 border-2 rounded-md" type="text" placeholder={field.label} />
+        </>
+      )
     default:
       return null;
   }

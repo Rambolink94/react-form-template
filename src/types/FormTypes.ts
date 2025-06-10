@@ -1,8 +1,8 @@
-export type FieldType = "select" | "checkbox" | "radio";
+export type FieldType = "select" | "checkbox" | "toggle" | "radio" | "text";
 
 type Dependency = {
   field: string;
-  fetchOptions: (values: any) => Promise<string[]>;
+  fetchOptions?: (values: any) => Promise<string[]>;
 };
 
 export type FieldConfig = {

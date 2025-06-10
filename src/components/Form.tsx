@@ -39,8 +39,13 @@ export default function Form({ fields }: Props) {
 
       dependencies.forEach(dep => {
         const depValue = formValues?.[dep.field];
-
+        
         if (depValue != null && depValue !== "") {
+          if (dep.fetchOptions === undefined) {
+            console.log(field);
+            return;
+          }
+          
           dep.fetchOptions(getValues()).then(options => {
             setOptionsMap((prev) => ({
               ...prev,
@@ -77,7 +82,7 @@ export default function Form({ fields }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center m-20">
+    <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center p-10">
       {fields.map((field) => (
         <div key={field.name} data-testid={`field-${field.name}`}>
           <FormField
