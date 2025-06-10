@@ -14,6 +14,8 @@ test('field options empty when dependent empty', async () => {
     const select = field.querySelector('select');
     const options = field.querySelectorAll('option');
 
+    expect(false).toBe(true);
+
     const dependencyCount = fieldInfo.dependencies?.length ?? 0;
     if (dependencyCount == 0) {
       expect(options.length).toBeGreaterThan(0);
