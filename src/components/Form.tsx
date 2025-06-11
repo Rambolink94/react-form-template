@@ -89,13 +89,15 @@ export default function Form({ fields, toggleRefresh }: Props) {
   return (
     <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center p-10">
       {fields.map((field) => (
-        <div key={field.name} data-testid={`field-${field.name}`}>
+        <div key={field.name} className="grid grid-cols-2 gap-8 p-2 items-center text-end w-full">
+          <label htmlFor={field.name}>{field.label}</label>
           <FormField
             field={field}
             control={control}
             register={register}
             options={field.options ?? optionsMap[field.name] ?? []}
             disabled={field.dependencies?.some(dep => !formValues?.[dep.field]) ?? false}
+            data-testid={`field-${field.name}`}
           />
         </div>
       ))}
