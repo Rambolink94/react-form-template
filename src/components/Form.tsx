@@ -5,10 +5,11 @@ import type { FieldConfig } from '@/types/FormTypes';
 
 type Props = {
   fields: FieldConfig[];
+  toggleRefresh?: boolean;
 }
 
-export default function Form({ fields }: Props) {
-  const { register, control, setValue, handleSubmit, getValues } = useForm();
+export default function Form({ fields, toggleRefresh }: Props) {
+  const { register, control, setValue, handleSubmit, getValues, reset } = useForm();
   const formValues = useWatch({ control });
   const [optionsMap, setOptionsMap] = useState<Record<string, string[]>>({});
   const [requiredMap, setRequiedMap] = useState<Record<string, boolean>>({});
@@ -31,8 +32,13 @@ export default function Form({ fields }: Props) {
     return map;
   }, [fields])
 
+  // Handle form refresh.
+  useEffect(() => reset() , [toggleRefresh]);
+
+  // Handle required field map.
   useEffect(() => setRequiedMap(computeRequiredMap), [computeRequiredMap]);
 
+  // Handle Dependencies.
   useEffect(() => {
     fields.forEach(field => {
       const dependencies = field.dependencies ?? [];
@@ -42,7 +48,6 @@ export default function Form({ fields }: Props) {
         
         if (depValue != null && depValue !== "") {
           if (dep.fetchOptions === undefined) {
-            console.log(field);
             return;
           }
           

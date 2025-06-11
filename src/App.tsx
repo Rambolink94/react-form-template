@@ -7,6 +7,12 @@ import { useState } from 'react';
 
 function App() {
   const [fieldConfig, setFieldConfig] = useState(generateFieldConfig());
+  const [toggleRefresh, setToggleRefresh] = useState(false);  // Toggle value to toggle reset.
+
+  const refreshForm = () => {
+    setFieldConfig(generateFieldConfig());
+    setToggleRefresh(prev => !prev);
+  }
 
   return (
     <>
@@ -16,11 +22,11 @@ function App() {
           
           
         </strong>
-        <button onClick={() => setFieldConfig(generateFieldConfig())} className="mt-4 pl-4 pr-4 p-2 rounded-md border-none bg-green-600 text-white hover:bg-slate-600 flex items-center">
+        <button onClick={refreshForm} className="mt-4 pl-4 pr-4 p-2 rounded-md border-none bg-green-600 text-white hover:bg-slate-600 flex items-center">
           <RiRefreshLine className="mr-2" />
           Regenerate Data
         </button>
-        <Form fields={fieldConfig} />
+        <Form fields={fieldConfig} toggleRefresh={toggleRefresh} />
         <a className="flex items-center" href="https://github.com/Rambolink94/react-form-template">
           <FaGithub className="h-10 w-10 hover:animate-bounce" />
         </a>
