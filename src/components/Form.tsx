@@ -2,9 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch, type FieldValues } from 'react-hook-form';
 import { FormField } from './FormField';
 import type { FieldConfig } from '@/types/FormTypes';
-import { Switch } from './Switch';
-import { Label } from './Label';
-
 type Props = {
   fields: FieldConfig[];
   toggleRefresh?: boolean;
