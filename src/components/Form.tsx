@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm, useWatch, type FieldValues } from 'react-hook-form';
 import { FormField } from './FormField';
 import type { FieldConfig } from '@/types/FormTypes';
+import { Switch } from './Switch';
+import { Label } from './Label';
 
 type Props = {
   fields: FieldConfig[];
@@ -87,24 +89,24 @@ export default function Form({ fields, toggleRefresh }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center p-10">
-      {fields.map((field) => (
-        <div key={field.name} className="grid grid-cols-2 gap-8 p-2 items-center text-end w-full">
-          <label htmlFor={field.name}>{field.label}</label>
-          <FormField
-            field={field}
-            control={control}
-            register={register}
-            options={field.options ?? optionsMap[field.name] ?? []}
-            disabled={field.dependencies?.some(dep => !formValues?.[dep.field]) ?? false}
-            data-testid={`field-${field.name}`}
-          />
-        </div>
-      ))}
+    <form onSubmit={handleSubmit(onValidSubmit)} noValidate className="flex flex-col justify-center items-center p-4 m-8 rounded-md border-green-600 border-1">
+        {fields.map((field) => (
+          <div key={field.name} className="grid grid-cols-2 p-2 items-center w-full">
+            <label htmlFor={field.name}>{field.label}</label>
+            <FormField
+              field={field}
+              control={control}
+              register={register}
+              options={field.options ?? optionsMap[field.name] ?? []}
+              disabled={field.dependencies?.some(dep => !formValues?.[dep.field]) ?? false}
+              data-testid={`field-${field.name}`}
+            />
+          </div>
+        ))}
 
-      <button type="submit" disabled={!isSubmitEnabled} className="mt-4 pl-10 pr-10 p-4 rounded-md border-none bg-slate-500 text-white hover:bg-slate-600">
-        Submit
-      </button>
-    </form>
+        <button type="submit" disabled={!isSubmitEnabled} className="mt-4 pl-10 pr-10 p-4 rounded-md border-none bg-slate-500 text-white hover:bg-slate-600">
+          Submit
+        </button>
+      </form>
   )
 }
